@@ -15,7 +15,6 @@ public class Player : MonoBehaviour {
     private float xDownLimit, yDownLimit;
     public static float Score;
     public float ScorePlus,Variation;//足される値
-    SphereCollider sphere;
     // Use this for initialization
     void Start () {
         Score = 0;
