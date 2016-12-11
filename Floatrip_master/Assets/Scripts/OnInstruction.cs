@@ -25,13 +25,13 @@ public class OnInstruction : MonoBehaviour
 
     void OnDisplay()
     {
-        //Canvasが表示されたら、オブジェクトを表示
-        /*if (GameManager.Instance.Canvas == canvasInstruction)
+        //INSTRUCTIONに移行したら、オブジェクトを表示
+        if (GameManager.GameStateProp == GameState.INSTRUCTION)
         {
             g = GameObject.Find("balloon1");
             Instantiate(g);
             Animation floatBalloon = gameObject.GetComponent<Animation>();
-        }*/
+        }
     }
 
     void BackTitle()
@@ -39,12 +39,8 @@ public class OnInstruction : MonoBehaviour
         //タッチするとタイトルへ戻る
         if (Input.touchCount > 0)
         {
-            Touch touch = Input.GetTouch(0);
-            if (touch.phase == TouchPhase.Began)
-            {
-                Animation anim2 = gameObject.GetComponent<Animation>();
-                Destroy(g);
-            }
+            Animation anim2 = gameObject.GetComponent<Animation>();
+            Destroy(g);
         }
     }
 }
