@@ -4,9 +4,8 @@ using System.Collections;
 public class Player : MonoBehaviour {
     [SerializeField]
     private float speed;
-    Touch touch0,touch1;
-    Vector3 touchPos;
-    Vector3 screenPos;
+    private Touch touch0,touch1;
+    private Vector3 touchPos,screenPos;
     private float difference;
     private float after;
     [SerializeField]
@@ -14,11 +13,13 @@ public class Player : MonoBehaviour {
     [SerializeField]
     private float xDownLimit, yDownLimit;
     public static float Score;
+    private bool movement = true;
     public float ScorePlus,Variation;//足される値
+    private Animator balloonAnimator;
     // Use this for initialization
     void Start () {
         Score = 0;
-        
+        balloonAnimator = this.GetComponent<Animator>();
 	}
 	
 	// Update is called once per frame
@@ -52,33 +53,47 @@ public class Player : MonoBehaviour {
             //touchPos.x = -touchPos.x;
             this.transform.position = Vector3.Lerp(this.transform.position, touchPos, speed * Time.deltaTime);
         }
-        if(Input.touchCount == 1)
+        
+        if (Input.touchCount == 1)
         {
+            if(movement == false)
+            {
+                touch0 = Input.GetTouch(0);
+                if (touch0.phase == TouchPhase.Ended) movement = true;
+                return;
+            }
             touch0 = Input.GetTouch(0);
-            touchPos = touch0.position;
-            touchPos.z = -10f;
-            touchPos = Camera.main.ScreenToWorldPoint(touchPos);
-            touchPos.y = this.transform.position.y;
-            touchPos.z = this.transform.position.z;
-            touchPos.x = -touchPos.x;
-            this.transform.position = Vector3.Lerp(this.transform.position, touchPos, speed * Time.deltaTime);
+            if (movement == true)
+            {
+                TouchMove(touch0);
+            }
+        }
+        if(Input.touchCount == 2)
+        {
+            movement = true;
+            touch0 = Input.GetTouch(0);
+            touch1 = Input.GetTouch(1);
+            TouchMove(touch0);
+            TouchMove(touch1);
+            if(touch0.phase == TouchPhase.Ended || touch1.phase == TouchPhase.Ended)
+            {
+                movement = false;
+            }
         }
     }
     //サイズ変更
     void Scalling()
     {
-        if(Input.touchCount == 2)
+        
+        if (Input.touchCount == 2)
         {
-            touch0 = Input.GetTouch(0);
-            touch1 = Input.GetTouch(1);
-            if(touch0.phase == TouchPhase.Began && touch1.phase == TouchPhase.Began) difference = Mathf.Abs(touch0.position.y - touch1.position.y);
+            if (touch0.phase == TouchPhase.Began && touch1.phase == TouchPhase.Began) difference = Mathf.Abs(touch0.position.y - touch1.position.y);
             after = Mathf.Abs(touch0.position.y - touch1.position.y);
             if (difference < after && this.transform.localScale.x < xUpLimit && this.transform.localScale.y < yUpLimit)
             {
                 this.transform.localScale += new Vector3(0.1f, 0.1f, 0.1f);
                 ScorePlus += Variation;
             }
-                
             if (difference > after && this.transform.localScale.x > xDownLimit && this.transform.localScale.y > yDownLimit)
             {
                 this.transform.localScale -= new Vector3(0.1f, 0.1f, 0.1f);
@@ -97,9 +112,15 @@ public class Player : MonoBehaviour {
         }
         Score += ScorePlus;
     }
-    void GameOver()
+    void TouchMove(Touch t)
     {
-
+        touchPos = t.position;
+        touchPos.z = -10f;
+        touchPos = Camera.main.ScreenToWorldPoint(touchPos);
+        touchPos.y = this.transform.position.y;
+        touchPos.z = this.transform.position.z;
+        this.transform.position = Vector3.Lerp(this.transform.position, touchPos, speed * Time.deltaTime);
     }
+    
 }
  
