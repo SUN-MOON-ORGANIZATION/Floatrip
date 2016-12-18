@@ -1,11 +1,17 @@
 ﻿using UnityEngine;
 using System.Collections;
+using System.Collections.Generic;
 
 public class SEManager : MonoBehaviour {
 
-	public AudioClip[]GameSE;//1ゲーム→ポーズSE,2オーバーSE,3ポーズ→ゲームSE,4リザルトSE,5newレコードリザルトSE
-	public AudioClip[]GUISE;//1タイトルSEタップ音
+	[SerializeField]
+	private AudioClip[] GUISE = new AudioClip[2];
+	[SerializeField]
+	private AudioClip[] GameSE = new AudioClip[5];//1ゲーム→ポーズSE,2オーバーSE,3ポーズ→ゲームSE,4リザルトSE,5newレコードリザルトSE
+
 	private AudioSource audiosource;
+	int GameSEID;
+	int GUILength = 2;
 
 	// Use this for initialization
 	void Start () {
@@ -17,18 +23,32 @@ public class SEManager : MonoBehaviour {
 	void Update () {
 
 	}
-
-	public void playGameSE(int SEID){
-		if (SEID < 0 || SEID >= GameSE.Length)
+	public void PlayGameSE(){
+		Debug.Log ("Sanic");
+		if (GameSEID < 0 || GameSEID >= GameSE.Length) {
+			Debug.Log ("Gameのif");
 			return;
-		audiosource.clip = GameSE [SEID];
+		}
+		audiosource.clip = GameSE [GameSEID];
 		audiosource.Play ();
+		Debug.Log ("Gameの音");
 	}
 
-	public void PlayGUISE(int SEID){
-		if (SEID < 0 || SEID >= GUISE.Length)
+
+	public void PlayGUISE(int ID){
+		if (GUISE.Length == 0) {
+			Debug.Log ("空です");
+		}
+		Debug.Log (ID);
+		Debug.Log (GUISE.Length);
+		if (ID < 0 || ID >= GUISE.Length) {
+			Debug.Log ("GUIのif");
 			return;
-		audiosource.clip = GUISE [SEID];
+		}
+
+		audiosource.clip = GUISE [ID];
+		Debug.Log ("aaa");
 		audiosource.Play ();
+		Debug.Log ("GUIの音");
 	}
 }
