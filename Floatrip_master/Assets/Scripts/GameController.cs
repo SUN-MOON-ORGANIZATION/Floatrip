@@ -6,16 +6,21 @@ using System.Collections;
 public class GameController : MonoBehaviour
 {
     GameManager gm;//GameManager
+	SEManager sm;//SEManager
 
     string sceneName;//シーン名
+
+	void Start(){
+		sm = GetComponent<SEManager> ();
+	}
 
     void Update()
     {
         //現在のステートを取得
         print(GameManager.GameStateProp);
 
-        //GameManagerを取得
-        gm = GameObject.Find("GameManager").GetComponent<GameManager>();
+        //GameManager
+		gm = GameObject.Find("GameManager").GetComponent<GameManager>();
 
         //現在のシーン名を取得
         sceneName = SceneManager.GetActiveScene().name;
@@ -59,6 +64,7 @@ public class GameController : MonoBehaviour
     {
         GameManager.GameStateProp = GameState.INSTRUCTION;
         gm.ShiftCanvas();
+		sm.PlayGUISE (1);
     }
 
     //スコア画面を表示
@@ -66,6 +72,7 @@ public class GameController : MonoBehaviour
     {
         GameManager.GameStateProp = GameState.SCORE;
         gm.ShiftCanvas();
+		sm.SendMessage ("PlayGUISE", 0);
     }
 
     //ポーズ画面を表示
@@ -73,6 +80,7 @@ public class GameController : MonoBehaviour
     {
         GameManager.GameStateProp = GameState.PAUSE;
         gm.ShiftCanvas();
+		sm.SendMessage ("PlayGameSE", 0);
     }
 
     //プレイ時のポーズボタンを表示
@@ -101,12 +109,14 @@ public class GameController : MonoBehaviour
     {
         GameManager.GameStateProp = GameState.PLAY;
         SceneManager.LoadScene("Main");
+		//sm.SendMessage ("PlayGUISE", 0);
     }
 
     //アプリを終了する
     public void OnExit()
     {
         Application.Quit();
+		sm.SendMessage ("PlayGUISE", 0);
     }
 }
  
