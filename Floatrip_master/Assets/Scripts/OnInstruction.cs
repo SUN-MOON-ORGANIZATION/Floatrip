@@ -5,6 +5,8 @@ public class OnInstruction : MonoBehaviour
 {
     //Canvas
     public Canvas canvasInstruction;
+    public Canvas canvasInstruction2;
+    public Canvas canvasInstruction3;
 
     public static GameManager gm;
 
@@ -25,25 +27,34 @@ public class OnInstruction : MonoBehaviour
 
     void OnDisplay()
     {
-        //Canvasが表示されたら、オブジェクトを表示
-        /*if (GameManager.Instance.Canvas == canvasInstruction)
+        //INSTRUCTIONに移行したら、オブジェクトを表示
+        if (GameManager.GameStateProp == GameState.INSTRUCTION)
         {
             g = GameObject.Find("balloon1");
             Instantiate(g);
             Animation floatBalloon = gameObject.GetComponent<Animation>();
-        }*/
+        }
     }
 
     void BackTitle()
     {
-        //タッチするとタイトルへ戻る
         if (Input.touchCount > 0)
         {
-            Touch touch = Input.GetTouch(0);
-            if (touch.phase == TouchPhase.Began)
+            //タッチすると次のページへ移動
+            canvasInstruction2.enabled = true;
+
+            if (Input.touchCount > 0)
             {
-                Animation anim2 = gameObject.GetComponent<Animation>();
-                Destroy(g);
+                //タッチすると次のページへ移動
+                canvasInstruction2.enabled = true;
+
+                //タッチするとタイトルへ戻る
+                Touch touch = Input.GetTouch(0);
+                if (touch.phase == TouchPhase.Began)
+                {
+                    Animation anim2 = gameObject.GetComponent<Animation>();
+                    Destroy(g);
+                }
             }
         }
     }
