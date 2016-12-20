@@ -121,6 +121,14 @@ public class Player : MonoBehaviour {
         touchPos.z = this.transform.position.z;
         this.transform.position = Vector3.Lerp(this.transform.position, touchPos, speed * Time.deltaTime);
     }
-    
+    void OnTriggerEnter2D(Collider2D enemy)
+    {
+        if (enemy.gameObject.tag == "Enemy")
+        {
+            Destroy(enemy.gameObject);
+
+        }
+    }
+
 }
  

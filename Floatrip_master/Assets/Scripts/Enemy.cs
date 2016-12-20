@@ -17,17 +17,10 @@ public class Enemy : MonoBehaviour {
         {
             BirdMove();
         }
-	
 	}
     void BirdMove()
     {
         this.transform.position += new Vector3(lateral, -player.ScorePlus, 0);
     }
-    void OnTriggerEnter2D(Collider2D enemy)
-    {
-        if(enemy.gameObject.tag == "Balloon")
-        {
-            Destroy(gameObject);
-        }
-    }
+    
 }

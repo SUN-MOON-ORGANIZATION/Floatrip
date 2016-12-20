@@ -20,9 +20,11 @@ public class Girl : MonoBehaviour {
 	
 	// Update is called once per frame
 	void Update () {
+        
         balloonPos = balloon.transform.position;
         balloonPos.y = balloonPos.y - girlPos;
-        this.transform.position = Vector3.Lerp(this.transform.position, balloonPos,girlSpeed * Time.deltaTime);
+        this.transform.position = Vector3.Lerp(this.transform.position, balloonPos, girlSpeed * Time.deltaTime);
+        
 	}
     //Animation終了ぐらいにAnimationEventで呼び出す
     void GameOver()
